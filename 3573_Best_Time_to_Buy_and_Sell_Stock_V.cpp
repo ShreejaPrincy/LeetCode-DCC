@@ -42,3 +42,38 @@ public:
         return solve(prices,k,dp,i,b);
     }
 };
+
+
+//Approach-2(bottom up Approach)
+
+class Solution {
+public:
+    long long maximumProfit(vector<int>& prices, int k) {
+        int n=prices.size();
+    vector<vector<vector<long long>>> dp(
+        n+1,
+        vector<vector<long long>>(
+            k+1,
+            vector<long long>(3, INT_MIN)
+        )
+    );
+
+        for(int kk=0;kk<=k;kk++){
+            dp[n][kk][0]=0;
+            dp[n][kk][1]=INT_MIN;
+            dp[n][kk][2]=INT_MIN;
+        }
+        for(int i=n-1;i>=0;i--){
+            for(int kk=0;kk<=k;kk++){
+                dp[i][kk][0]=dp[i+1][kk][0];
+                if(kk>0) dp[i][kk][0]=max(dp[i+1][kk][0],max(prices[i]+dp[i+1][kk][2],-prices[i]+dp[i+1][kk][1]));
+                dp[i][kk][1]=dp[i+1][kk][1];
+                if(kk>0) dp[i][kk][1]=max(prices[i]+dp[i+1][kk-1][0],dp[i+1][kk][1]);
+                dp[i][kk][2]=dp[i+1][kk][2];
+                if(kk>0) dp[i][kk][2]=max(-prices[i]+dp[i+1][kk-1][0],dp[i+1][kk][2]);
+                
+            }
+        }
+        return dp[0][k][0];
+    }
+};
