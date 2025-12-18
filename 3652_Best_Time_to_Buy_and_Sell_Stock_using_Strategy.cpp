@@ -28,8 +28,8 @@ public:
 
             if(j-i+1>k){
                 x-=profit_arr[i];
-                i++;
                 y-=prices[i+k/2];
+                i++;
             }
             if(j-i+1==k)    max_gain=max(max_gain,y-x);
         }
